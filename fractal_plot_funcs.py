@@ -6,7 +6,7 @@ from helper_funcs import generate_gradient
 
 # create comments for the function below
 
-def fractal_canopy(canvas: tk.Canvas, x: int, y: int, init_length = 200, angle_delta = 10, start_angle = -90, n_splits = 2, n_iters = 3,length_ratio=0.75, off_angle = 0, wave_amp=0, first_iter = True, width=1, width_ratio=0.75, color = "#000000") -> None:
+def fractal_canopy(canvas: tk.Canvas, x: int, y: int, init_length=200, angle_delta=10, start_angle=-90, n_splits=2, n_iters=3, length_ratio=0.75, off_angle=0, wave_amp=0, first_iter=True, width=1, width_ratio=0.75, color="#000000") -> None:
     """
     This function recursively draws a fractal canopy (a tree-like structure) on the provided Tkinter canvas. The fractal canopy is created by splitting each branch into multiple smaller branches at specified angles and lengths, and optionally adding sine wave segments to the branches.
 
@@ -30,86 +30,44 @@ def fractal_canopy(canvas: tk.Canvas, x: int, y: int, init_length = 200, angle_d
     Returns:
         None
     """
+    
+    # Function to draw a branch segment with optional sine wave
+    def draw_branch(x, y, end_x, end_y, width, color):
+        if wave_amp != 0:
+            draw_sine_wave_segment(canvas, x, y, end_x, end_y, init_length, wave_amp, width=width, fill=color)
+        else:
+            canvas.create_line(x, y, end_x, end_y, width=width, fill=color)
 
-    # base case
+    # Function to get the color for the current iteration
+    def get_color(n_iters, color):
+        if isinstance(color, str):
+            return color
+        return color[-(n_iters-1)]
+
+    # Base case: stop recursion if n_iters is 1
     if n_iters == 1:
         return
 
-    # The first iteration behaves differently than the rest of the iterations, it's just a straight line
-    elif first_iter:
+    # Convert start angle to radians
+    start_angle_rad = rad(start_angle)
 
-        # turn start_angle into radians
-        start_angle = rad(start_angle)
-
-        # calculate the x and y coordinates of the end of the branch
-        end_x = x + np.cos(start_angle)*init_length 
-        end_y = y + np.sin(start_angle)*init_length
-
-        # if wave_amp is not 0, draw a sine wave segment
-        if wave_amp != 0:
-            # if color is a string, use that color, else use the color from the list of colors
-            if type(color) == str:
-                draw_sine_wave_segment(canvas, x, y, end_x, end_y, init_length, wave_amp, width=width, fill=color)
-            else:
-                draw_sine_wave_segment(canvas, x, y, end_x, end_y, init_length, wave_amp, width=width, fill=color[-(n_iters-1)])
-        # if wave_amp is 0, draw a straight line
-        else:
-
-            # if color is a string, use that color, else use the color from the list of colors
-            if type(color) == str:
-                canvas.create_line(x, y, end_x, end_y, width=width, fill=color)
-            else:
-                canvas.create_line(x, y, end_x, end_y, width=width, fill=color[-(n_iters-1)])
-        
-        
-
-        # Recursive call
-        fractal_canopy(canvas, end_x, end_y, n_iters=n_iters-1, first_iter=False, n_splits=n_splits, angle_delta=angle_delta, start_angle=np.degrees(start_angle)+off_angle, init_length=init_length*length_ratio, off_angle = off_angle+off_angle, wave_amp=wave_amp, width=width*width_ratio, width_ratio=width_ratio, color=color)
-    
-    # The rest of the iterations
+    # Draw the first branch segment
+    if first_iter:
+        end_x = x + np.cos(start_angle_rad) * init_length
+        end_y = y + np.sin(start_angle_rad) * init_length
+        draw_branch(x, y, end_x, end_y, width, get_color(n_iters, color))
+        fractal_canopy(canvas, end_x, end_y, n_iters=n_iters-1, first_iter=False, n_splits=n_splits, angle_delta=angle_delta, start_angle=np.degrees(start_angle_rad) + off_angle, init_length=init_length * length_ratio, off_angle=off_angle, wave_amp=wave_amp, width=width * width_ratio, width_ratio=width_ratio, color=color)
+    # Recursively draw the branches
     else:
-        # calculate the angles of the splits
-        left_angle = start_angle-(angle_delta/2)
-        right_angle = start_angle+(angle_delta/2)
-        # linspace gets us n_splits angles between left_angle and right_angle
-        angles = np.linspace(left_angle, right_angle, n_splits, )
-        
-        # iterate over the angles
+        # Calculate the angles for the branches
+        left_angle = start_angle - (angle_delta / 2)
+        right_angle = start_angle + (angle_delta / 2)
+        angles = np.linspace(left_angle, right_angle, n_splits)
+
+        # For each angle, draw a branch and recursively call the function
         for angle in angles:
-            
-            # turn angle into radians
-            angle = rad(angle)
-
-            # calculate the x and y coordinates of the end of the branch
-            end_x = x + np.cos(angle)*init_length 
-            end_y = y + np.sin(angle)*init_length
-
-            # if wave_amp is not 0, draw a sine wave segment
-            if wave_amp != 0:
-                # if color is a string, use that color, else use the color from the list of colors
-                if type(color) == str:
-                    draw_sine_wave_segment(canvas, x, y, end_x, end_y, init_length, wave_amp, width=width, fill=color)
-                else:
-                    draw_sine_wave_segment(canvas, x, y, end_x, end_y, init_length, wave_amp, width=width, fill=color[-(n_iters-1)])
-            # if wave_amp is 0, draw a straight line
-            else:
-                # if color is a string, use that color, else use the color from the list of colors
-                if type(color) == str:
-                    canvas.create_line(x, y, end_x, end_y, width=width, fill=color)
-                else:
-                    canvas.create_line(x, y, end_x, end_y, width=width, fill=color[-(n_iters-1)])
-
-            # Recursive call
-            fractal_canopy(canvas, end_x, end_y, n_iters=n_iters-1, first_iter=False, init_length=init_length*length_ratio, start_angle=np.degrees(angle)+off_angle, n_splits=n_splits, angle_delta=angle_delta, off_angle=off_angle+off_angle, wave_amp=wave_amp, width=width*width_ratio, width_ratio=width_ratio, color=color)
-
-
-
-
-
-    
-
-
-
-
-
-
+            angle_rad = rad(angle)
+            end_x = x + np.cos(angle_rad) * init_length
+            end_y = y + np.sin(angle_rad) * init_length
+            draw_branch(x, y, end_x, end_y, width, get_color(n_iters, color))
+            fractal_canopy(canvas, end_x, end_y, n_iters=n_iters-1, first_iter=False, init_length=init_length * length_ratio, start_angle=np.degrees(angle_rad) + off_angle, n_splits=n_splits, angle_delta=angle_delta, off_angle=off_angle, wave_amp=wave_amp, width=width * width_ratio, width_ratio=width_ratio, color=color)
