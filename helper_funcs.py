@@ -45,7 +45,11 @@ def rgb_to_hex(rgb_color):
 def interpolate_color(color1, color2, factor):
     return tuple(int(color1[i] + (color2[i] - color1[i]) * factor) for i in range(3))
 
-def generate_gradient(color1, color2, steps):
+def generate_gradient(color, steps):
+
+    color1 = color[0]
+    color2 = color[1]
+
     rgb_color1 = hex_to_rgb(color1)
     rgb_color2 = hex_to_rgb(color2)
     gradient = []
