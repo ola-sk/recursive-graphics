@@ -1,10 +1,10 @@
 import tkinter as tk
 
-# creating main application window
+# Creating main application window
 window=tk.Tk()
 window.title("Fractal Matching Game") 
-window.geometry("600x800") #set to potrait orientation
-window.resizable(False,False) # making window non resizable
+window.geometry("600x800") # Set to potrait orientation
+window.resizable(False,False) # Making window non resizable
 
 # Run the Tkinter event loop
 window.mainloop()
