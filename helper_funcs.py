@@ -1,6 +1,33 @@
+"""
+helper_funcs.py
+
+This module contains helper functions for use with drawing fractals on a Tkinter canvas.
+
+Functions:
+    draw_sine_wave_segment()
+        Draws a sine wave segment on a Tkinter canvas between two points.
+    hex_to_rgb()
+        Converts a hex color string to an RGB tuple.
+    rgb_to_hex()
+        Converts an RGB tuple to a hex color string.
+    interpolate_color()
+        Interpolates between two RGB colors by a given factor.
+    generate_gradient()
+        Generates a gradient list of colors between two hex color values.
+"""
+
+import tkinter as tk
 import numpy as np
 
-def draw_sine_wave_segment(canvas, x, y, end_x, end_y, line_len, wave_amp, fill, width=1):
+def draw_sine_wave_segment(canvas: tk.Canvas,
+                           x: float,
+                           y: float,
+                           end_x: float,
+                           end_y: float,
+                           line_len: float,
+                           wave_amp: float,
+                           fill: str,
+                           width: float = 1):
     """
     Draws a sine wave segment on a Tkinter canvas between two points.
 
@@ -13,7 +40,7 @@ def draw_sine_wave_segment(canvas, x, y, end_x, end_y, line_len, wave_amp, fill,
         line_len (float): The length of the line segment.
         wave_amp (float): The amplitude of the sine wave.
         fill (str): The color of the sine wave in hex format.
-        width (int, optional): The width of the sine wave line. Defaults to 1.
+        width (float, optional): The width of the sine wave line. Defaults to 1.
 
     Returns:
         None
@@ -22,21 +49,21 @@ def draw_sine_wave_segment(canvas, x, y, end_x, end_y, line_len, wave_amp, fill,
     angle = np.arctan2(end_y - y, end_x - x)
 
     period_scale = 2 * np.pi / line_len
-    
+
     # Generate sine wave points
     t = np.linspace(0, line_len, 100)
     sine_wave_x = t
     sine_wave_y = wave_amp * np.sin(period_scale * t)
-    
+
     # Rotate and translate points
     cos_angle = np.cos(angle)
     sin_angle = np.sin(angle)
+
     transformed_points = []
     for i in range(len(t)):
         new_x = cos_angle * sine_wave_x[i] - sin_angle * sine_wave_y[i] + x
         new_y = sin_angle * sine_wave_x[i] + cos_angle * sine_wave_y[i] + y
         transformed_points.append((new_x, new_y))
-    
     # Draw the sine wave segment
     for i in range(len(transformed_points) - 1):
         unit_vector_x = transformed_points[i+1][0] - transformed_points[i][0]
@@ -45,10 +72,12 @@ def draw_sine_wave_segment(canvas, x, y, end_x, end_y, line_len, wave_amp, fill,
         unit_vector_x /= unit_vector_length
         unit_vector_y /= unit_vector_length
 
-        canvas.create_line(transformed_points[i][0], transformed_points[i][1],
-                           transformed_points[i+1][0] + unit_vector_x * 2.5, transformed_points[i+1][1] + unit_vector_y * 2.5, width=width, fill=fill)
-
-# Helper functions for generating gradients
+        canvas.create_line(transformed_points[i][0],
+                           transformed_points[i][1],
+                           transformed_points[i+1][0] + (unit_vector_x * 2.5),
+                           transformed_points[i+1][1] + (unit_vector_y * 2.5),
+                           width=width,
+                           fill=fill)
 
 # Convert hex color to RGB tuple
 def hex_to_rgb(hex_color):
@@ -110,6 +139,8 @@ def generate_gradient(color1, color2, steps):
     gradient = []
     for step in range(steps):
         factor = step / (steps - 1)
-        interpolated_color = interpolate_color(rgb_color1, rgb_color2, factor)
+        interpolated_color = interpolate_color(rgb_color1,
+                                               rgb_color2,
+                                               factor)
         gradient.append(rgb_to_hex(interpolated_color))
     return gradient
