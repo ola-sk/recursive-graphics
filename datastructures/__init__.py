@@ -1,1 +1,2 @@
 from datastructures.fractal_tree_base import TreeNodeBase
+from datastructures.traversal import traverse_depth_first, traverse_breadth_first
