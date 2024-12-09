@@ -10,6 +10,44 @@ window.resizable(False,False) # making window non resizable
 canvas = tk.Canvas(window, bg="white", width=500, height=450)
 canvas.grid(row=0, column=0, columnspan=3, pady=(20, 10), padx=(50, 0))
 
+
+# Fill the canvas with squares to demonstrate zoom feature
+
+def draw_squares(canvas, num_squares, square_size):
+    for i in range(num_squares):
+        x = i * square_size
+        y = i * square_size
+        canvas.create_rectangle(x, y, x + square_size, y + square_size, outline="black", fill="blue")
+
+# Drawing 8 squares to demonstrate zoom feature
+draw_squares(canvas, 8, 50)
+
+
+# Click and drag functionality to pan the canvas
+def start_pan(event):
+    canvas.scan_mark(event.x, event.y)
+
+
+def do_pan(event):
+    canvas.scan_dragto(event.x, event.y, gain=1)
+
+
+def zoom(event):
+    # Zoom in or out
+    scale = 1.1 if event.delta > 0 else 0.9
+    canvas.scale("all", canvas.canvasx(event.x), canvas.canvasy(event.y), scale, scale)
+
+
+# Bind mouse wheel to zoom function
+canvas.bind("<MouseWheel>", zoom)
+
+# Bind mouse events to pan functions
+canvas.bind("<ButtonPress-1>", start_pan)
+canvas.bind("<B1-Motion>", do_pan)
+
+
+
+
 '''Add a frame for the sliders below the canvas'''
 slidersLabels = tk.Frame(window)
 slidersLabels.grid(row=1, column=0, columnspan=3, pady=10)
