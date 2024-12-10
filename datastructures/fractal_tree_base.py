@@ -143,7 +143,7 @@ class TreeNodeBase:
         new_tree_root = TreeNodeBase(
             start_x=kwargs.get('start_x', cls._current_tree_root.start_x),
             start_y=kwargs.get('start_y', cls._current_tree_root.start_y),
-            length=kwargs.get('delta_angle', cls._current_tree_root.length),
+            length=kwargs.get('length', cls._current_tree_root.length),
             angle=kwargs.get('angle', cls._current_tree_root.angle),
             num_children=kwargs.get('num_children', cls._current_tree_root.num_children),
             length_scale=kwargs.get('length_scale', cls._current_tree_root.length_scale),
