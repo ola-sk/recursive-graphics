@@ -1,43 +1,43 @@
+"""
+Main module for the application.
+
+This module initializes the main application window, sets up the canvas,
+adds sliders for various parameters, and binds events for canvas zooming.
+"""
+
 import tkinter as tk
 
-# Create main application window
-window=tk.Tk()
-window.title("Fractal Matching Game")
-window.geometry("600x900") # Set to portrait orientation
-window.resizable(False,False) # Making window non-resizable
+from gui import (initialise_gui,
+                 populate_sliders,
+                 bind_canvas_zoom_events)
+from sandbox import draw_squares
 
-# Add a canvas for the fractal display
-canvas = tk.Canvas(window, bg="white", width=500, height=450)
-canvas.grid(row=0, column=0, columnspan=3, pady=(20, 10), padx=(50, 0))
+# Main application window
+window_width = 1300
+window_height = 700
+window = initialise_gui(window_width, window_height)
 
-# Add a frame for the sliders below the canvas
-slidersLabels = tk.Frame(window)
-slidersLabels.grid(row=1, column=0, columnspan=3, pady=10)
+# place Canvas in the window
+canvas_padding_x = 0
+canvas = tk.Canvas(
+    window, bg="white",
+    width=window_width - 2 * canvas_padding_x,
+    height=535
+)
+canvas.grid(
+    row=0, column=0, columnspan=2,
+    pady=(0, 0),
+    padx=(canvas_padding_x, canvas_padding_x))
 
-# Add sliders for 8 different parameters
-colour1Scale = tk.Scale(slidersLabels, label="Root Color", from_=0, to=360, orient=tk.HORIZONTAL, length=120)
-colour1Scale.grid(row=3, column=0, padx=10, pady=10)
+# Frame for the sliders
+sliders_frame = tk.Frame(window)
+sliders_frame.grid(row=1, column=0, columnspan=3, pady=10)
 
-colour2Scale = tk.Scale(slidersLabels, label="Leaf Color", from_=0, to=360, orient=tk.HORIZONTAL, length=120)
-colour2Scale.grid(row=3, column=1, padx=10, pady=10)
+# Create sliders
+populate_sliders(sliders_frame, 4)
 
-off_scaleScale = tk.Scale(slidersLabels, label="Angle Offset", from_=-45, to=45, orient=tk.HORIZONTAL, length=120)
-off_scaleScale.grid(row=0, column=0, padx=10, pady=10)
-
-angle_detaScale = tk.Scale(slidersLabels, label="Angle Size", from_=0, to=180, orient=tk.HORIZONTAL, length=120)
-angle_detaScale.grid(row=0, column=1, padx=10, pady=10)
-
-n_splitsScale = tk.Scale(slidersLabels, label="Number of Branches", from_=2, to=8, orient=tk.HORIZONTAL, length=120)
-n_splitsScale.grid(row=1, column=0, padx=10, pady=10)
-
-length_ratioScale = tk.Scale(slidersLabels, label="Length_Ratio", from_=0, to=1, orient=tk.HORIZONTAL, length=120)
-length_ratioScale.grid(row=1, column=1, padx=10, pady=10)
-
-init_lengthScale = tk.Scale(slidersLabels, label="Initial Length", from_=0.5, to=0.75, orient=tk.HORIZONTAL, length=120)
-init_lengthScale.grid(row=2, column=0, padx=10, pady=10)
-
-width_ratioScale = tk.Scale(slidersLabels, label="Width Ratio", from_=0.5, to=0.75, orient=tk.HORIZONTAL, length=120)
-width_ratioScale.grid(row=2, column=1, padx=10, pady=10)
+draw_squares(canvas)
+bind_canvas_zoom_events(canvas)
 
 # Run the Tkinter event loop
 window.mainloop()
