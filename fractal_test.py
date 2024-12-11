@@ -24,14 +24,14 @@ canvas = Canvas(bg="white", height=500, width=500)
 canvas.grid(row=0, column=0)
 
 # generate a gradient from brown to green
-gradient_list = generate_gradient("#8B4513", "#228B22", 10)
+gradient_list = generate_gradient("#8B4513", "#228B22", 5)
 
 # draw a fractal canopy
 fractal_canopy(canvas, 250, 500,
-               n_iters=7, init_length=200,
+               n_iters=5, init_length=200,
                n_splits=4, angle_delta=180,
                off_angle=0, length_ratio=0.3,
-               wave_amp=5, width=20,
+               wave_amp=0, width=20,
                width_ratio=0.6, color=gradient_list)
 
 tk.mainloop()

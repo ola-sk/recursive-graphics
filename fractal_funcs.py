@@ -14,8 +14,7 @@ Functions:
 import tkinter as tk
 import numpy as np
 from numpy import radians as rad
-from helper_funcs import draw_sine_wave_segment
-
+from helper_funcs import draw_sine_wave_segment, generate_gradient
 
 def fractal_canopy(
     canvas: tk.Canvas,
@@ -141,6 +140,11 @@ def fractal_canopy(
 
     # Draw the first branch segment
     if first_iter:
+        if type(color) == str:
+            color = generate_gradient(color, color, n_iters)
+        else:
+            color = generate_gradient(color[0], color[1], n_iters)
+
         end_x = (x
                  + np.cos(start_angle_rad)
                  * init_length)
