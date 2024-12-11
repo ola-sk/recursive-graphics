@@ -71,10 +71,10 @@ def fractal_canopy(
         width_ratio (float, optional): 
             The ratio by which the width of each branch decreases at each iteration.
             Defaults to 0.75.
-        color (str or list, optional): 
+        color (str or tuple of size 2, optional): 
             The color of the branches in hex format. Defaults to "#000000" (black).
-            If a list of hex values of length `n_iters` is provided,
-            the color will change with each iteration.
+            If a tuple of size 2 is provided, a color gradient is generated between the two colors.
+            If a single color is provided, all branches will be drawn in that color.
         first_iter (bool, optional): 
             A flag indicating whether this is the first iteration.
             Defaults to True. Do not modify this parameter.
@@ -140,7 +140,7 @@ def fractal_canopy(
 
     # Draw the first branch segment
     if first_iter:
-        if type(color) == str:
+        if isinstance(color, str):
             color = generate_gradient(color, color, n_iters)
         else:
             color = generate_gradient(color[0], color[1], n_iters)

@@ -12,7 +12,6 @@ angle delta, and wave amplitude.
 
 from tkinter import Tk, Canvas
 from fractal_funcs import fractal_canopy
-from helper_funcs import generate_gradient
 
 tk = Tk()
 
@@ -23,15 +22,14 @@ tk.geometry("500x700")
 canvas = Canvas(bg="white", height=500, width=500)
 canvas.grid(row=0, column=0)
 
-# generate a gradient from brown to green
-gradient_list = generate_gradient("#8B4513", "#228B22", 5)
-
+# create a tuple of hex colors size 2, blue to orange:
+color_tuple = ("#0000FF", "#FFA500")
 # draw a fractal canopy
 fractal_canopy(canvas, 250, 500,
-               n_iters=5, init_length=200,
+               n_iters=10, init_length=200,
                n_splits=4, angle_delta=180,
                off_angle=0, length_ratio=0.3,
                wave_amp=0, width=20,
-               width_ratio=0.6, color=gradient_list)
+               width_ratio=0.6, color=color_tuple)
 
 tk.mainloop()
