@@ -27,7 +27,8 @@ canvas = tk.Canvas(
 canvas.grid(
     row=0, column=0, columnspan=2,
     pady=(0, 0),
-    padx=(canvas_padding_x, canvas_padding_x))
+    padx=(canvas_padding_x, canvas_padding_x)
+)
 
 # Frame for the sliders
 sliders_frame = tk.Frame(window)

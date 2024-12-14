@@ -1,8 +1,11 @@
 """
-Main module for the application.
+Module for creating sliders in the GUI.
 
-This module initializes the main application window, sets up the canvas,
-adds sliders for various parameters, and binds events for canvas zooming.
+Contains functions for creating sliders given their parameters, including some custom ones.
+in the GUI, which can be used to control the parameters of the fractal tree displayed on the canvas.
+It also defines the event handlers as well as the generator for the grid layout of the sliders.
+
+A populate_sliders function is provided to add sliders for different parameters to the sliders frame.
 """
 import tkinter as tk
 
