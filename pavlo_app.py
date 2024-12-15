@@ -62,20 +62,38 @@ def start():
         check_match()
 
     def check_match():
-        if (random_params['length'] == length_slider.get() \
-            and random_params['angle'] == angle_slider.get()  \
-            and random_params['iteration'] == iteration_slider.get() \
-            and random_params['branch_angle'] == branch_angle_slider.get()\
-            and random_params['length_ratio'] == length_ratio_slider.get()):
-            if 'congrat_win' in globals():
-                congrat_win.destroy()
+        if 'congrat_win' in globals():
+            congrat_win.destroy()
+
+        length_tolerance = 2
+        angle_tolerance = 2
+        iteration_tolerance = 0
+        branch_angle_tolerance = 2
+        length_ratio_tolerance = 0.02
+
+        length_diff = abs(random_params['length'] - length_slider.get())
+        angle_diff = abs(random_params['angle'] - angle_slider.get())
+        iteration_diff = abs(random_params['iteration'] - iteration_slider.get())
+        branch_angle_diff = abs(random_params['branch_angle'] - branch_angle_slider.get())
+        length_ratio_diff = abs(random_params['length_ratio'] - length_ratio_slider.get())
+
+        if (
+            length_diff < length_tolerance and
+            angle_diff < angle_tolerance and
+            iteration_diff <= iteration_tolerance and
+            branch_angle_diff < branch_angle_tolerance and
+            length_ratio_diff < length_ratio_tolerance
+        ):
             show_congratulations()
-        
+                    
 
     def show_congratulations():
+    
+
         global congrat_win
-        congrat_win = tk.Tk()
-        win.withdraw()
+        congrat_win = tk.Toplevel(win)
+        
+        
 
         
         congrat_win.title("Congratulations!")
@@ -88,7 +106,7 @@ def start():
         restart_button.pack(padx=10, pady=10)
 
 
-        congrat_win.deiconify()
+        
 
 
     def generate_random_tree():
