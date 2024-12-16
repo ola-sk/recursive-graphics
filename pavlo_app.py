@@ -78,10 +78,14 @@ def start():
                 branch_angle_diff < branch_angle_tolerance and
                 length_ratio_diff < length_ratio_tolerance
         ):
+            # Disable all sliders
+            length_slider.config(state='disabled')
+            angle_slider.config(state='disabled')
+            iteration_slider.config(state='disabled')
+            branch_angle_slider.config(state='disabled')
+            length_ratio_slider.config(state='disabled')
             # The congratulatory popup destroys itself once the restart button is clicked and also restarts the game.
             create_congratulatory_popup(win, restart)
-        
-
 
     def generate_random_tree():
         global random_params
