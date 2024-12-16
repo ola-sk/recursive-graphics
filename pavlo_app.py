@@ -128,8 +128,10 @@ def start():
         restart_button = tk.Button(congrat_win, text="Restart", command= lambda: restart())
         congrat_label = tk.Label(congrat_win, text="Congratulations! \n "
                                 'You\'ve matched the random tree!', font=("Arial", 14))
+        exit_button = tk.Button(congrat_win, text="Exit", command= lambda: exit_app())
         congrat_label.pack(padx=10, pady=10)
         restart_button.pack(padx=10, pady=10)
+        exit_button.pack(padx=10, pady=10)
 
 
         
