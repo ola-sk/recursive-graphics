@@ -9,6 +9,9 @@ win: tk.Tk = initialize_gui()
 random_params: dict[str, int | float] = {}
 
 def start():
+    def exit_app():
+        win.destroy()
+
     def restart():
         global win
         win.destroy() #TODO: Block sliders instead and restart sliders to random values and canvas to random tree once restart button is clicked
