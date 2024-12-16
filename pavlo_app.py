@@ -1,11 +1,13 @@
 import tkinter as tk
-import numpy as np
 from random import randint
+
+import numpy as np
+
 
 def start():
     def restart():
-        win.destroy()
         congrat_win.destroy()
+        win.destroy()
         start()
 
 
@@ -62,8 +64,13 @@ def start():
         check_match()
 
     def check_match():
-        if 'congrat_win' in globals():
-            congrat_win.destroy()
+        try:
+            # I think we can even assume this is always in globals.
+            # We can only check if the window object is not destroyed by checking if accessing it causes errors.
+            if 'congrat_win' in globals() and congrat_win.winfo_exists():
+                congrat_win.destroy()
+        except tk.TclError:
+            pass
 
         length_tolerance = 2
         angle_tolerance = 2
