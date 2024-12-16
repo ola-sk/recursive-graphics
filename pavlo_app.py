@@ -77,6 +77,14 @@ def start():
         check_match()
 
     def check_match():
+        try:
+            # I think we can even assume this is always in globals.
+            # We can only check if the window object is not destroyed by checking if accessing it causes errors.
+            if 'congrat_win' in globals() and congrat_win.winfo_exists():
+                congrat_win.destroy()
+        except tk.TclError:
+            pass
+
         if 'congrat_win' in globals():
             congrat_win.destroy()
 
@@ -99,6 +107,11 @@ def start():
             branch_angle_diff < branch_angle_tolerance and
             length_ratio_diff < length_ratio_tolerance
         ):
+            length_slider.config(state='disabled')
+            angle_slider.config(state='disabled')
+            iteration_slider.config(state='disabled') # Disables all sliders
+            branch_angle_slider.config(state='disabled')
+            length_ratio_slider.config(state='disabled')
             show_congratulations()
                     
 
