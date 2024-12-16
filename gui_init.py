@@ -24,7 +24,7 @@ def initialize_gui() -> tk.Tk:
 
     return window
 
-def create_congratulatory_popup(window, restart:  callable):
+def create_congratulatory_popup(window, restart:  callable, exit_app: callable):
     congratulatory_popup = tk.Toplevel(window)
 
     congratulatory_popup.title("Congratulations!")
@@ -33,6 +33,9 @@ def create_congratulatory_popup(window, restart:  callable):
     restart_button = tk.Button(congratulatory_popup, text="Restart", command=lambda: (congratulatory_popup.destroy(), restart()))
     congratulatory_label = tk.Label(congratulatory_popup, text="Congratulations! \n "
                                                'You\'ve matched the random tree!', font=("Arial", 14))
+    exit_button = tk.Button(congratulatory_popup, text="Exit", command=lambda: exit_app())
+
     congratulatory_label.pack(padx=10, pady=10)
     restart_button.pack(padx=10, pady=10)
+    exit_button.pack(padx=10, pady=10)
     window.congratulatory_popup = congratulatory_popup
