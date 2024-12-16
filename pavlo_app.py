@@ -11,6 +11,18 @@ def start():
         congrat_win.destroy()
         start()
 
+    def centrum_window(window,title: str, width, height): # Function to center the window
+        screen_width = window.winfo_screenwidth() # takes the width of the screen
+        screen_height = window.winfo_screenheight() # takes the height of the screen
+
+        x = (screen_width // 2) - (width // 2) # calculates the x position
+        y = (screen_height // 2) - (height // 2) # calculates the y position
+
+        window.geometry(f'{width}x{height}+{x}+{y}')
+        window.title(title)
+        window.resizable(False,False)
+        return window
+
 
     def draw_tree(x, y, length, angle, canvas, iteration, branch_angle , length_ratio: float ,tag, first_iter = True,):
         if iteration == 0:
