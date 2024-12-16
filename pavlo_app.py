@@ -120,13 +120,11 @@ def start():
 
         global congrat_win
         congrat_win = tk.Toplevel(win)
+        centrum_window(congrat_win, "Congratulations!", 300, 300) # Centers the window on the screen
         
         
 
         
-        congrat_win.title("Congratulations!")
-        congrat_win.geometry("300x100")
-        congrat_win.resizable(False, False)
         restart_button = tk.Button(congrat_win, text="Restart", command= lambda: restart())
         congrat_label = tk.Label(congrat_win, text="Congratulations! \n "
                                 'You\'ve matched the random tree!', font=("Arial", 14))
@@ -155,7 +153,8 @@ def start():
 
 
     global win
-    win = tk.Tk()    
+    win = tk.Tk()   
+    centrum_window(win, "Tree Matching Game", 1200, 800) # Centers the window on the screen 
     canvas = tk.Canvas(win, bg='green', width=1000, height=600)
 
     ScalesLabel = tk.LabelFrame(win, text="Adjust Tree Parameters", font=("Arial", 14), padx=10, pady=10)
