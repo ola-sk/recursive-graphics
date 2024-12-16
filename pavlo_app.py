@@ -3,6 +3,9 @@ import numpy as np
 from random import randint
 
 def start():
+    def exit_app():
+        win.destroy()
+
     def restart():
         win.destroy()
         congrat_win.destroy()
