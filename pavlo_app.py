@@ -3,18 +3,20 @@ from random import randint
 
 import numpy as np
 
-from gui_init import initialize_gui
+from gui_init import initialize_gui, create_congratulatory_popup
 
 win: tk.Tk = initialize_gui()
 random_params: dict[str, int | float] = {}
 
 def start():
     def restart():
-        congrat_win.destroy()
-        win.destroy()
+        global win
+        win.destroy() #TODO: Block sliders instead and restart sliders to random values and canvas to random tree once restart button is clicked
+        win = initialize_gui()
         start()
 
-    def draw_tree(x, y, length, angle, canvas, iteration, branch_angle, length_ratio: float, tag, first_iter=True, ):
+
+    def draw_tree(x, y, length, angle, canvas, iteration, branch_angle, length_ratio: float, tag, first_iter=True):
         if iteration == 0:
             return
 
@@ -47,9 +49,13 @@ def start():
         check_match()
 
     def check_match():
-        if 'congrat_win' in globals():
-            congrat_win.destroy()
-
+        try:
+            # I think we can even assume this is always in globals.
+            # We can only check if the window object is not destroyed by checking if accessing it causes errors.
+            if hasattr(win, 'congratulatory_popup') and win.congratulatory_popup.winfo_exists():
+                win.congratulatory_popup.destroy()
+        except tk.TclError:
+            pass
         length_tolerance = 2
         angle_tolerance = 2
         iteration_tolerance = 0
@@ -69,20 +75,10 @@ def start():
                 branch_angle_diff < branch_angle_tolerance and
                 length_ratio_diff < length_ratio_tolerance
         ):
-            show_congratulations()
+            # The congratulatory popup destroys itself once the restart button is clicked and also restarts the game.
+            create_congratulatory_popup(win, restart)
+        
 
-    def show_congratulations():
-        global congrat_win
-        congrat_win = tk.Toplevel(win)
-
-        congrat_win.title("Congratulations!")
-        congrat_win.geometry("300x100")
-        congrat_win.resizable(False, False)
-        restart_button = tk.Button(congrat_win, text="Restart", command=lambda: restart())
-        congrat_label = tk.Label(congrat_win, text="Congratulations! \n "
-                                                   'You\'ve matched the random tree!', font=("Arial", 14))
-        congrat_label.pack(padx=10, pady=10)
-        restart_button.pack(padx=10, pady=10)
 
     def generate_random_tree():
         global random_params
@@ -98,6 +94,8 @@ def start():
         }
         print(random_params)
         draw_tree(**random_params, first_iter=True, tag="random")
+
+    global win
 
     # Create sliders for controlling the tree's parameters
     length_slider = tk.Scale(win.scales_label, from_=50, to=200, orient=tk.HORIZONTAL, label="Initial Branch Length",
@@ -133,6 +131,5 @@ def start():
     win.canvas.pack(padx=10, pady=10)
     win.scales_label.pack(padx=10, pady=10)
     win.mainloop()
-
 
 start()
